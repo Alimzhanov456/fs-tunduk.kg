@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Мои PDF{% endblock %}
+{% block content %}
+<div class="card">
+  <p><a class="muted" href="{{ url_for('admin_home') }}">← к записям документов</a></p>
+  <h1>Загрузить свой PDF</h1>
+  <p class="muted">
+    Загрузите готовый PDF-файл. Самый свежий загруженный файл автоматически
+    становится тем, что открывается на голом адресе домена (<span class="mono">{{ root_url }}</span>)
+    — без пути и без ID, как вы и просили.
+  </p>
+  <form method="post" enctype="multipart/form-data">
+    <label for="pdf_file">PDF-файл (до 20 МБ)</label>
+    <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" required style="margin-bottom:12px;">
+    <button class="btn" type="submit">Загрузить и получить QR</button>
+  </form>
+</div>
+
+{% if active_id %}
+<div class="card">
+  <h2>QR на сам домен</h2>
+  <p class="muted">Ведёт на {{ root_url }} — сейчас это открывает файл, отмеченный ниже как «активный».</p>
+  <img src="{{ url_for('qr_png_site') }}" alt="QR" width="130" height="130" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #DCE3DD;">
+  <p><a class="btn secondary" href="{{ url_for('qr_png_site') }}" download>Скачать QR (PNG)</a></p>
+</div>
+{% endif %}
+
+<div class="card">
+  <h2>Загруженные файлы</h2>
+  {% if pdfs %}
+    {% for p in pdfs %}
+      <a class="list-link" href="{{ url_for('admin_pdf_detail', pdf_id=p.id) }}">
+        <span>
+          {{ p.filename }}
+          {% if p.id == active_id %}<span class="pill" style="margin-left:8px;background:#E1EFE9;color:#0E3A30;border-color:#BFE3D2;">активный</span>{% endif %}
+        </span>
+        <span class="mono muted">#{{ p.id }}</span>
+      </a>
+    {% endfor %}
+  {% else %}
+    <p class="muted">Пока ничего не загружено.</p>
+  {% endif %}
+</div>
+{% endblock %}

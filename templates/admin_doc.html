@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ doc.title }} — #{{ doc.id }}{% endblock %}
+{% block content %}
+<div class="card">
+  <p><a class="muted" href="{{ url_for('admin_home') }}">← ко всем документам</a></p>
+  <h1>{{ doc.title }}</h1>
+  <table>
+    <tr><th>Номер</th><td class="mono">{{ doc.id }}</td></tr>
+    <tr><th>Владелец</th><td>{{ doc.holder_name }}</td></tr>
+    <tr><th>Дата выдачи</th><td>{{ doc.issue_date }}</td></tr>
+    <tr><th>Статус</th><td>{{ doc.status }}</td></tr>
+    {% for f in doc.extra_fields %}
+      <tr><th>{{ f.k }}</th><td>{{ f.v }}</td></tr>
+    {% endfor %}
+  </table>
+  <p style="margin-top:10px;"><a class="btn danger" href="{{ url_for('admin_delete', doc_id=doc.id) }}"
+     onclick="return confirm('Удалить документ #{{ doc.id }}?');">Удалить документ</a></p>
+</div>
+
+<div class="card">
+  <h2>QR-код проверки</h2>
+  <img src="{{ url_for('qr_png', doc_id=doc.id) }}" alt="QR" width="150" height="150" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #DCE3DD;">
+  <p class="muted mono" style="word-break:break-all;">{{ verify_url }}</p>
+  <a class="btn secondary" href="{{ url_for('qr_png', doc_id=doc.id) }}" download>Скачать QR (PNG)</a>
+</div>
+
+<div class="card">
+  <h2>Вставить этот QR в PDF-файл</h2>
+  <p class="muted">Загрузите готовый PDF (например, шаблон вашего документа) — сервер впечатает в него QR-код с ссылкой на эту запись и вернёт готовый файл.</p>
+  <form method="post" action="{{ url_for('stamp_pdf', doc_id=doc.id) }}" enctype="multipart/form-data">
+    <label for="pdf_file">PDF-файл</label>
+    <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" required style="margin-bottom:12px;">
+    <div class="row2">
+      <div>
+        <label for="page">Номер страницы</label>
+        <input type="number" id="page" name="page" value="1" min="1">
+      </div>
+      <div>
+        <label for="size">Размер QR (пункты)</label>
+        <input type="number" id="size" name="size" value="110" min="40" max="300">
+      </div>
+    </div>
+    <div class="row2">
+      <div>
+        <label for="x">Отступ слева (X, пункты от края)</label>
+        <input type="number" id="x" name="x" value="40">
+      </div>
+      <div>
+        <label for="y">Отступ снизу (Y, пункты от края)</label>
+        <input type="number" id="y" name="y" value="40">
+      </div>
+    </div>
+    <p class="muted">Страница A4 ≈ 595×842 пункта, Letter ≈ 612×792 — подберите X/Y под макет вашего документа.</p>
+    <button class="btn" type="submit">Впечатать QR и скачать PDF</button>
+  </form>
+</div>
+{% endblock %}

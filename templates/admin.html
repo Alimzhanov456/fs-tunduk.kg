@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Админка — документы{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Выпустить новый документ</h1>
+  <form method="post">
+    <label for="title">Название документа</label>
+    <input type="text" id="title" name="title" required placeholder="например: Справка об окончании курса">
+
+    <div class="row2">
+      <div>
+        <label for="holder_name">Имя владельца</label>
+        <input type="text" id="holder_name" name="holder_name" required>
+      </div>
+      <div>
+        <label for="issue_date">Дата выдачи</label>
+        <input type="text" id="issue_date" name="issue_date" placeholder="дд.мм.гггг">
+      </div>
+    </div>
+
+    <label for="status">Статус</label>
+    <input type="text" id="status" name="status" value="Действителен">
+
+    <label>Дополнительные поля</label>
+    <div class="row2">
+      <input type="text" name="field_key" placeholder="Поле, например: Программа">
+      <input type="text" name="field_val" placeholder="Значение">
+    </div>
+    <div class="row2">
+      <input type="text" name="field_key" placeholder="Поле">
+      <input type="text" name="field_val" placeholder="Значение">
+    </div>
+
+    <button class="btn" type="submit">Создать и получить QR</button>
+  </form>
+</div>
+
+<div class="card">
+  <h2>Существующие документы</h2>
+  {% if docs %}
+    {% for d in docs %}
+      <a class="list-link" href="{{ url_for('admin_doc', doc_id=d.id) }}">
+        <span>{{ d.title }} — {{ d.holder_name }}</span>
+        <span class="mono muted">#{{ d.id }}</span>
+      </a>
+    {% endfor %}
+  {% else %}
+    <p class="muted">Пока ничего не выпущено.</p>
+  {% endif %}
+</div>
+{% endblock %}

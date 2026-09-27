@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Проверка документа {{ doc_id }}{% endblock %}
+{% block content %}
+<div class="card">
+  {% if doc %}
+    <span class="pill">Найдено</span>
+    <h1>{{ doc.title }}</h1>
+    <table>
+      <tr><th>Номер документа</th><td class="mono">{{ doc.id }}</td></tr>
+      <tr><th>Владелец</th><td>{{ doc.holder_name }}</td></tr>
+      <tr><th>Дата выдачи</th><td>{{ doc.issue_date }}</td></tr>
+      <tr><th>Статус</th><td>{{ doc.status }}</td></tr>
+      {% for f in doc.extra_fields %}
+        <tr><th>{{ f.k }}</th><td>{{ f.v }}</td></tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <span class="pill">Не найдено</span>
+    <h1>Документ с номером {{ doc_id }} не найден</h1>
+    <p class="muted">Если запись не была выпущена и сохранена в этой системе, страница проверки не подтвердит документ — это и есть смысл проверки по QR.</p>
+  {% endif %}
+</div>
+{% endblock %}

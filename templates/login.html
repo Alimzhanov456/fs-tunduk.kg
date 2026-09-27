@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Вход в админку{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Вход в панель администратора</h1>
+  <form method="post">
+    <label for="password">Пароль</label>
+    <input type="password" id="password" name="password" required autofocus>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+  <p class="muted">Пароль задаётся переменной окружения <code>ADMIN_PASSWORD</code> на сервере.</p>
+</div>
+{% endblock %}

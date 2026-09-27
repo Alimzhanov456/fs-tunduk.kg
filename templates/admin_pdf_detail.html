@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ pdf.filename }}{% endblock %}
+{% block content %}
+<div class="card">
+  <p><a class="muted" href="{{ url_for('admin_pdfs') }}">← ко всем PDF</a></p>
+  <h1>{{ pdf.filename }}</h1>
+  <p class="muted">Загружен: {{ pdf.uploaded_at.strftime('%d.%m.%Y %H:%M') }} UTC</p>
+  <p>
+    <a class="btn secondary" href="{{ file_url }}" target="_blank" rel="noopener">Открыть PDF →</a>
+    <a class="btn danger" href="{{ url_for('admin_pdf_delete', pdf_id=pdf.id) }}"
+       onclick="return confirm('Удалить {{ pdf.filename }}?');">Удалить</a>
+  </p>
+</div>
+
+{% if is_active %}
+<div class="card">
+  <span class="pill" style="background:#E1EFE9;color:#0E3A30;border-color:#BFE3D2;">Открывается на самом домене</span>
+  <h2 style="margin-top:12px;">QR на {{ root_url.split('://')[-1] }} — без пути и без ID</h2>
+  <p class="muted">Это самый свежий загруженный файл, поэтому сейчас именно он открывается по адресу корня сайта — так, как вы просили, без лишних "/" и идентификаторов.</p>
+  <img src="{{ url_for('qr_png_site') }}" alt="QR" width="150" height="150" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #DCE3DD;">
+  <p class="muted mono" style="word-break:break-all;">{{ root_url }}</p>
+  <a class="btn secondary" href="{{ url_for('qr_png_site') }}" download>Скачать этот QR (PNG)</a>
+  <p class="muted" style="margin-top:10px;">Если загрузите новый PDF в «Мои PDF», корень домена автоматически переключится на него — тогда этот QR перестанет вести на текущий файл. Печатайте QR на документ только после того, как загрузили в систему его окончательную версию.</p>
+</div>
+{% else %}
+<div class="banner">
+  Это не самый свежий загруженный файл — по адресу корня домена сейчас открывается другой, более новый PDF. QR на голый домен ({{ root_url }}) поведёт на тот, новый файл, а не на этот. Чтобы на домене открывался именно этот файл — удалите более новые загрузки или загрузите этот файл заново.
+</div>
+{% endif %}
+
+<div class="card">
+  <h2>Прямая ссылка на именно этот файл</h2>
+  <p class="muted">Работает всегда, независимо от того, что сейчас на корне домена — удобно, если файлов несколько и нужно ссылаться на конкретный.</p>
+  <img src="{{ url_for('qr_png_pdf', pdf_id=pdf.id) }}" alt="QR" width="120" height="120" style="background:#fff;padding:8px;border-radius:8px;border:1px solid #DCE3DD;">
+  <p class="muted mono" style="word-break:break-all;">{{ file_url }}</p>
+  <a class="btn secondary" href="{{ url_for('qr_png_pdf', pdf_id=pdf.id) }}" download>Скачать QR (PNG)</a>
+</div>
+{% endblock %}

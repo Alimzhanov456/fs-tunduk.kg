@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Document Verify{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>Сервис проверки документов</h1>
+  <p class="muted">
+    Отсканируйте QR-код на документе — он приведёт на страницу вида
+    <code>/verify/&lt;ID&gt;</code>, которая покажет запись, если она
+    действительно была выпущена и сохранена здесь.
+  </p>
+  <p><a class="btn" href="{{ url_for('login') }}">Панель администратора →</a></p>
+</div>
+{% endblock %}
