@@ -1,0 +1,12 @@
+# Optional — only needed once you point DATABASE_URL at a hosted Postgres
+# (Neon, Supabase, Railway...). Not required for local SQLite testing.
+#
+# psycopg2-binary often has no prebuilt wheel yet for the very latest Python
+# version on Windows, which makes pip try to compile it from source and fail
+# with "pg_config executable not found". If that happens, either:
+#   - use a slightly older Python (3.11-3.12) in your virtualenv, or
+#   - install the modern pure-Python-friendly driver instead:
+#       pip install "psycopg[binary]"
+#     and change app.py's DATABASE_URL handling from "postgresql://" to
+#     "postgresql+psycopg://" (one line, commented in app.py).
+psycopg2-binary==2.9.9
