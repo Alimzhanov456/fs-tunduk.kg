@@ -151,6 +151,16 @@ def require_login():
 
 @app.get("/")
 def index():
+    # Domain root opens the most recently uploaded PDF directly (no /f/<id>).
+    # If nothing has been uploaded yet, show a plain "Hello world!".
+    latest = PdfFile.query.order_by(PdfFile.uploaded_at.desc()).first()
+    if latest:
+        return send_file(
+            io.BytesIO(latest.data),
+            mimetype="application/pdf",
+            download_name=latest.filename,
+            as_attachment=False,
+        )
     return "Hello world!"
 
 
