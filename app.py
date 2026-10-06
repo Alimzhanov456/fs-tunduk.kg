@@ -151,18 +151,7 @@ def require_login():
 
 @app.get("/")
 def index():
-    # If a PDF has been uploaded, the domain root itself serves the most
-    # recently uploaded one directly -- no /f/<id>, no extra path. Upload a
-    # new PDF later and the root switches to that new file automatically.
-    latest = PdfFile.query.order_by(PdfFile.uploaded_at.desc()).first()
-    if latest:
-        return send_file(
-            io.BytesIO(latest.data),
-            mimetype="application/pdf",
-            download_name=latest.filename,
-            as_attachment=False,
-        )
-    return render_template("index.html")
+    return "Hello world!"
 
 
 @app.get("/verify/<doc_id>")
