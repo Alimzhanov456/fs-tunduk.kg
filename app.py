@@ -179,7 +179,7 @@ STATUS_PAGE_HTML = """<!doctype html>
     <path d="M52 167l16 16M68 167L52 183" stroke="#ea4335"/>
     <path d="M110 45h45M110 110h45M110 175h45" stroke-width="5"/>
   </svg>
-  <h1>Сервер работает в исправности</h1>
+  <h1>Сервис не доступен, ведутся работы</h1>
 </body>
 </html>
 """
