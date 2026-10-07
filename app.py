@@ -159,7 +159,7 @@ STATUS_PAGE_HTML = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>erbol.kg</title>
+<title>fs.tunduk.kg</title>
 <style>
   html,body{height:100%;margin:0}
   body{display:flex;flex-direction:column;align-items:center;justify-content:center;
