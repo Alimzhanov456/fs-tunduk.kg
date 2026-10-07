@@ -156,16 +156,9 @@ def require_login():
 
 @app.get("/")
 def index():
-    # Domain root opens the most recently uploaded PDF directly (no /f/<id>).
-    # If nothing has been uploaded yet, show a plain "Hello world!".
-    latest = PdfFile.query.order_by(PdfFile.uploaded_at.desc()).first()
-    if latest:
-        return send_file(
-            io.BytesIO(latest.data),
-            mimetype="application/pdf",
-            download_name=latest.filename,
-            as_attachment=False,
-        )
+    # The bare domain always shows a plain page. Uploaded PDFs are reachable
+    # only through their own link, /f/<ID> (that's the link the per-file QR
+    # from the "Мои PDF" section encodes).
     return "Hello world!"
 
 
