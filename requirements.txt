@@ -5,7 +5,7 @@ reportlab==4.2.2
 pypdf==4.3.1
 gunicorn==22.0.0
 python-dotenv==1.0.1
-psycopg2-binary>=2.9.10
+psycopg[binary]>=3.2
 # Postgres driver is NOT needed for local testing (SQLite is used by default).
 # Only install it once you actually connect a hosted Postgres (README, step 2):
 #   pip install -r requirements-postgres.txt
