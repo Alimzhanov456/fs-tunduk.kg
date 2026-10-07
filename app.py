@@ -154,12 +154,43 @@ def require_login():
 # Public routes
 # --------------------------------------------------------------------------
 
+STATUS_PAGE_HTML = """<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>erbol.kg</title>
+<style>
+  html,body{height:100%;margin:0}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;
+       background:#0f1115;color:#e8eaed;font-family:system-ui,"Segoe UI",Arial,sans-serif;
+       text-align:center;padding:24px;box-sizing:border-box}
+  svg{width:min(60vw,280px);height:auto;margin-bottom:28px}
+  h1{font-size:clamp(1.3rem,4.5vw,2rem);font-weight:600;margin:0}
+</style>
+</head>
+<body>
+  <svg viewBox="0 0 200 220" fill="none" stroke="#9aa0a6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="25" y="20" width="150" height="50" rx="8"/>
+    <rect x="25" y="85" width="150" height="50" rx="8"/>
+    <rect x="25" y="150" width="150" height="50" rx="8"/>
+    <path d="M52 37l16 16M68 37L52 53" stroke="#ea4335"/>
+    <path d="M52 102l16 16M68 102L52 118" stroke="#ea4335"/>
+    <path d="M52 167l16 16M68 167L52 183" stroke="#ea4335"/>
+    <path d="M110 45h45M110 110h45M110 175h45" stroke-width="5"/>
+  </svg>
+  <h1>Сервер работает в исправности</h1>
+</body>
+</html>
+"""
+
+
 @app.get("/")
 def index():
-    # The bare domain always shows a plain page. Uploaded PDFs are reachable
-    # only through their own link, /f/<ID> (that's the link the per-file QR
-    # from the "Мои PDF" section encodes).
-    return "Hello world!"
+    # The bare domain always shows this plain status page. Uploaded PDFs are
+    # reachable only through their own link, /f/<ID> (that's the link the
+    # per-file QR from the "Мои PDF" section encodes).
+    return STATUS_PAGE_HTML
 
 
 @app.get("/verify/<doc_id>")
