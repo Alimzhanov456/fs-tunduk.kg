@@ -51,10 +51,15 @@ app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20 MB upload cap
 # the "psycopg[binary]" alternative mentioned there instead of psycopg2,
 # change the replacement below to "postgresql+psycopg://".
 db_url = os.environ.get("DATABASE_URL", "sqlite:///local.db")
-   if db_url.startswith("postgres://"):
-       db_url = "postgresql+psycopg://" + db_url[len("postgres://"):]
-   elif db_url.startswith("postgresql://"):
-       db_url = "postgresql+psycopg://" + db_url[len("postgresql://"):]
+# Always use the psycopg (v3) driver explicitly for Postgres -- newer
+# SQLAlchemy versions default to it anyway, and being explicit avoids
+# "No module named psycopg / psycopg2" surprises.
+if db_url.startswith("postgres://"):
+    db_url = "postgresql+psycopg://" + db_url[len("postgres://"):]
+elif db_url.startswith("postgresql://"):
+    db_url = "postgresql+psycopg://" + db_url[len("postgresql://"):]
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "change-me")
 
